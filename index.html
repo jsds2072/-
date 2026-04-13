@@ -1,286 +1,54 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Glassmorphism Calculator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-            margin: 0;
-            color: white;
-        }
-
-        .calculator-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 2rem;
-            padding: 1.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            width: 100%;
-            max-width: 360px;
-        }
-
-        .display {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            text-align: right;
-            min-height: 120px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            word-break: break-all;
-        }
-
-        .history-line {
-            font-size: 0.9rem;
-            color: #94a3b8;
-            margin-bottom: 0.5rem;
-            height: 1.2rem;
-        }
-
-        .current-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            line-height: 1;
-        }
-
-        .btn {
-            aspect-ratio: 1;
-            border-radius: 1.25rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            font-weight: 600;
-            transition: all 0.2s;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .btn:active {
-            transform: scale(0.95);
-        }
-
-        .btn-number {
-            background: rgba(255, 255, 255, 0.05);
-            color: #e2e8f0;
-        }
-
-        .btn-number:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-operator {
-            background: rgba(96, 165, 250, 0.1);
-            color: #60a5fa;
-        }
-
-        .btn-operator:hover {
-            background: rgba(96, 165, 250, 0.2);
-        }
-
-        .btn-action {
-            background: rgba(248, 113, 113, 0.1);
-            color: #f87171;
-        }
-
-        .btn-equals {
-            background: #3b82f6;
-            color: white;
-            grid-column: span 2;
-            aspect-ratio: auto;
-        }
-
-        .btn-equals:hover {
-            background: #2563eb;
-        }
-
-        .history-panel {
-            margin-top: 1rem;
-            font-size: 0.8rem;
-            color: #64748b;
-            max-height: 100px;
-            overflow-y: auto;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 1rem;
-        }
-
-        /* Custom Scrollbar */
-        .history-panel::-webkit-scrollbar {
-            width: 4px;
-        }
-        .history-panel::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>계산기</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
+  <div class="app">
+    <header class="header">
+      <h1 class="title">계산기</h1>
+      <p class="hint" aria-live="polite">키보드로 숫자·연산·Enter·Esc 사용 가능</p>
+    </header>
 
-<div class="calculator-card">
-    <div class="display">
-        <div id="history-display" class="history-line"></div>
-        <div id="current-display" class="current-value">0</div>
+    <div class="calculator" role="application" aria-label="계산기">
+      <div class="display" aria-live="polite">
+        <div class="display__sub" id="subDisplay" aria-hidden="true"></div>
+        <div class="display__main" id="mainDisplay">0</div>
+      </div>
+
+      <div class="keys" id="keys">
+        <button type="button" class="key key--fn" data-action="clear" aria-label="전체 지우기">AC</button>
+        <button type="button" class="key key--fn" data-action="sign" aria-label="부호 바꾸기">±</button>
+        <button type="button" class="key key--fn" data-action="percent" aria-label="퍼센트">%</button>
+        <button type="button" class="key key--op" data-action="operator" data-op="/" aria-label="나누기">÷</button>
+
+        <button type="button" class="key" data-action="digit" data-value="7">7</button>
+        <button type="button" class="key" data-action="digit" data-value="8">8</button>
+        <button type="button" class="key" data-action="digit" data-value="9">9</button>
+        <button type="button" class="key key--op" data-action="operator" data-op="*" aria-label="곱하기">×</button>
+
+        <button type="button" class="key" data-action="digit" data-value="4">4</button>
+        <button type="button" class="key" data-action="digit" data-value="5">5</button>
+        <button type="button" class="key" data-action="digit" data-value="6">6</button>
+        <button type="button" class="key key--op" data-action="operator" data-op="-" aria-label="빼기">−</button>
+
+        <button type="button" class="key" data-action="digit" data-value="1">1</button>
+        <button type="button" class="key" data-action="digit" data-value="2">2</button>
+        <button type="button" class="key" data-action="digit" data-value="3">3</button>
+        <button type="button" class="key key--op" data-action="operator" data-op="+" aria-label="더하기">+</button>
+
+        <button type="button" class="key key--wide" data-action="digit" data-value="0">0</button>
+        <button type="button" class="key" data-action="decimal" aria-label="소수점">.</button>
+        <button type="button" class="key key--op key--equals" data-action="equals" aria-label="결과">=</button>
+      </div>
     </div>
-
-    <div class="grid grid-cols-4 gap-3">
-        <!-- Row 1 -->
-        <div class="btn btn-action" onclick="clearAll()">AC</div>
-        <div class="btn btn-action" onclick="deleteLast()">DEL</div>
-        <div class="btn btn-operator" onclick="appendOperator('%')">%</div>
-        <div class="btn btn-operator" onclick="appendOperator('/')">÷</div>
-
-        <!-- Row 2 -->
-        <div class="btn btn-number" onclick="appendNumber('7')">7</div>
-        <div class="btn btn-number" onclick="appendNumber('8')">8</div>
-        <div class="btn btn-number" onclick="appendNumber('9')">9</div>
-        <div class="btn btn-operator" onclick="appendOperator('*')">×</div>
-
-        <!-- Row 3 -->
-        <div class="btn btn-number" onclick="appendNumber('4')">4</div>
-        <div class="btn btn-number" onclick="appendNumber('5')">5</div>
-        <div class="btn btn-number" onclick="appendNumber('6')">6</div>
-        <div class="btn btn-operator" onclick="appendOperator('-')">-</div>
-
-        <!-- Row 4 -->
-        <div class="btn btn-number" onclick="appendNumber('1')">1</div>
-        <div class="btn btn-number" onclick="appendNumber('2')">2</div>
-        <div class="btn btn-number" onclick="appendNumber('3')">3</div>
-        <div class="btn btn-operator" onclick="appendOperator('+')">+</div>
-
-        <!-- Row 5 -->
-        <div class="btn btn-number" onclick="appendNumber('0')">0</div>
-        <div class="btn btn-number" onclick="appendNumber('.')">.</div>
-        <div class="btn btn-equals" onclick="calculate()">=</div>
-    </div>
-
-    <div class="history-panel" id="history-log">
-        <p class="mb-1 opacity-50">최근 기록</p>
-        <div id="history-items"></div>
-    </div>
-</div>
-
-<script>
-    let currentInput = '0';
-    let previousInput = '';
-    let operator = null;
-    let shouldResetScreen = false;
-
-    const currentDisplayElement = document.getElementById('current-display');
-    const historyDisplayElement = document.getElementById('history-display');
-    const historyLogElement = document.getElementById('history-items');
-
-    function updateDisplay() {
-        currentDisplayElement.innerText = currentInput;
-        if (operator) {
-            historyDisplayElement.innerText = `${previousInput} ${getOperatorSymbol(operator)}`;
-        } else {
-            historyDisplayElement.innerText = '';
-        }
-    }
-
-    function getOperatorSymbol(op) {
-        const symbols = { '*': '×', '/': '÷', '+': '+', '-': '-', '%': '%' };
-        return symbols[op] || op;
-    }
-
-    function appendNumber(number) {
-        if (currentInput === '0' || shouldResetScreen) {
-            currentInput = number;
-            shouldResetScreen = false;
-        } else {
-            currentInput += number;
-        }
-        updateDisplay();
-    }
-
-    function appendOperator(op) {
-        if (operator !== null) calculate();
-        previousInput = currentInput;
-        operator = op;
-        shouldResetScreen = true;
-        updateDisplay();
-    }
-
-    function clearAll() {
-        currentInput = '0';
-        previousInput = '';
-        operator = null;
-        updateDisplay();
-    }
-
-    function deleteLast() {
-        if (currentInput.length > 1) {
-            currentInput = currentInput.slice(0, -1);
-        } else {
-            currentInput = '0';
-        }
-        updateDisplay();
-    }
-
-    function calculate() {
-        if (operator === null || shouldResetScreen) return;
-
-        let result;
-        const prev = parseFloat(previousInput);
-        const current = parseFloat(currentInput);
-
-        switch (operator) {
-            case '+': result = prev + current; break;
-            case '-': result = prev - current; break;
-            case '*': result = prev * current; break;
-            case '/': 
-                if (current === 0) {
-                    showError("Error");
-                    return;
-                }
-                result = prev / current; 
-                break;
-            case '%': result = prev % current; break;
-            default: return;
-        }
-
-        // Add to history log
-        const logEntry = document.createElement('div');
-        logEntry.className = 'flex justify-between py-1 border-b border-white/5';
-        logEntry.innerHTML = `<span>${prev} ${getOperatorSymbol(operator)} ${current}</span> <span class="text-blue-400">= ${result}</span>`;
-        historyLogElement.prepend(logEntry);
-
-        currentInput = result.toString();
-        operator = null;
-        previousInput = '';
-        shouldResetScreen = true;
-        updateDisplay();
-    }
-
-    function showError(msg) {
-        currentInput = msg;
-        updateDisplay();
-        shouldResetScreen = true;
-        setTimeout(() => clearAll(), 1500);
-    }
-
-    // Keyboard support
-    window.addEventListener('keydown', (e) => {
-        if (e.key >= 0 && e.key <= 9) appendNumber(e.key);
-        if (e.key === '.') appendNumber('.');
-        if (e.key === '=' || e.key === 'Enter') calculate();
-        if (e.key === 'Backspace') deleteLast();
-        if (e.key === 'Escape') clearAll();
-        if (['+', '-', '*', '/'].includes(e.key)) appendOperator(e.key);
-    });
-
-</script>
-
+  </div>
+  <script src="app.js"></script>
 </body>
 </html>
