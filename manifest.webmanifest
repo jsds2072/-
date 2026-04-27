@@ -1,0 +1,19 @@
+{
+  "name": "AI Flex",
+  "short_name": "AI Flex",
+  "description": "한화투자증권 사내 협업 · 업무일지 · 회의실 · 법인카드",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f3f0",
+  "theme_color": "#f37321",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
